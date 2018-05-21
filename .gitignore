@@ -1,0 +1,5 @@
+.DS_Store
+instances/QAP/qapdata/*
+!instances/QAP/qapdata/tai20a
+instances/BIQ/BIQdata/*
+!instances/BIQ/BIQdata/be100.1.sparse
