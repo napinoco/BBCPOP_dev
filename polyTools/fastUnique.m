@@ -17,10 +17,15 @@ iter = 0;
 isSuccess = false;
 while ~isSuccess && iter < maxit
     deg = sum(array, 2);
-    val = array * sort(rand(size(array, 2), 1),'ascend');
-    %val = array * rand(size(array, 2), 1);
-    val = val + deg * 2^ceil(log2(max(val)));
-    [~, ia1, ic1] = unique(val);
+    if size(array, 1) <= 1e8 
+        val = array * sort(rand(size(array, 2), 1), 'ascend');
+        val = val + deg * 2^ceil(log2(max(val)));
+        [~, ia1, ic1] = unique(val);
+    else
+        val = array * sort(rand(size(array, 2), 2), 'ascend');
+        val(:, 1) = val(:, 1) + deg * 2^ceil(log2(max(val(:, 1))));
+        [~, ia1, ic1] = unique(val, 'rows');
+    end
     uniquearray = array(ia1, :);
     
     isSuccess = isequal(array, uniquearray(ic1, :));
