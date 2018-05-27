@@ -60,9 +60,9 @@ for ii = 1:length(ineqPolySys)
 end
 
 % simplify (reduce degree of binary variables, gather same monomials)
-objPoly = simplifyPoly(objPoly, I01, false);
+objPoly = simplifyPoly(objPoly, I01, false, false);
 for ii = 1:length(ineqPolySys)
-    ineqPolySys{ii} = simplifyPoly(ineqPolySys{ii}, I01, false);
+    ineqPolySys{ii} = simplifyPoly(ineqPolySys{ii}, I01, false, false);
 end
 
 % order
