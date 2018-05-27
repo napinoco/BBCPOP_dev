@@ -122,8 +122,7 @@ end
 if isfield(params,'UbdIX')
     UbdIX = params.UbdIX;
 else
-    UbdIX = min(estimateUbdIX(polyCone, Icomp, params),...
-        estimateUbdIXpd(polyCone, Icomp, params));
+    UbdIX = estimateUbdIXpd(polyCone, Icomp, params);
 end
 if params.printyesDNN >= 2
     etime = toc(stime);
