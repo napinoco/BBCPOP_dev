@@ -43,27 +43,13 @@ function [chain, eq0Var, lbd, ubd] ...
     for ii = 1:size(Icomp, 1)
         iicomp = Icomp(ii, :); % full?
         tmp = boolSupport(:, iicomp);
-        tmpAll = all(tmp, 2); % all() was very slow on Matlab 2016b/Mac
-%         tmpAll = tmp(:, 1);
-%         for jj = 2:size(tmp, 2) 
-%             tmpAll = tmpAll & tmp(:, jj);  
-%         end
+        % tmpAll = all(tmp, 2); % all() was very slow on Matlab 2016b/Mac
+        tmpAll = tmp(:, 1);
+        for jj = 2:size(tmp, 2) 
+            tmpAll = tmpAll & tmp(:, jj);  
+        end
         eq0Var = eq0Var | tmpAll;
     end
-    eq0Var2 = dnf(boolSupport, Icomp');
-    if ~isequal(eq0Var, eq0Var2); error('dnf error'); end
-    
-    deg = sum(Icomp, 2);
-    tmp = false(numSDPvar, max(deg));
-    eq0Var2 = false(numSDPvar, 1);
-    for ii = 1:size(Icomp, 1)
-        iicomp = Icomp(ii, :);
-        iideg = deg(ii);
-        tmp(:, 1:iideg) = ~boolSupport(:, iicomp);
-        eq0Var2 = eq0Var2 | ~any(tmp(:, 1:iideg), 2);
-    end
-    if ~isequal(eq0Var, eq0Var2); error('error'); end
-
 
     if nonneg
         lbd = zeros(numSDPvar, 1);
