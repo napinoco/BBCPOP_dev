@@ -1,6 +1,6 @@
 function [chain, eq0Var, lbd, ubd] ...
     = genEqIneq(uniqueSupport, I01, Icomp, nonneg)
-%%GENEQINEQ   Generate chain, Eq 
+%GENEQINEQ   Generate chain, Eq 
 %   
 % uniqueSupport must be sorted with respect to degree
 % in order to allow the simple expression of chain.
@@ -24,7 +24,7 @@ function [chain, eq0Var, lbd, ubd] ...
             tmpSupport(:, ii) = uniqueSupport(:, ii) ./ gcdBox;
         end
 
-        [~, ~, ic] = fastUnique(tmpSupport); 
+        [~, ~, ic] = fastUnique(tmpSupport); %grevlexUnique(tmpSupport);
         numvar = length(ic);
 
         isNotSingleton = accumarray(ic, 1) > 1;
@@ -39,16 +39,9 @@ function [chain, eq0Var, lbd, ubd] ...
     numSDPvar = size(uniqueSupport, 1);
 
     eq0Var = false(numSDPvar, 1);
-    boolSupport = logical(uniqueSupport);
     for ii = 1:size(Icomp, 1)
-        iicomp = Icomp(ii, :); % full?
-        tmp = boolSupport(:, iicomp);
-        % tmpAll = all(tmp, 2); % all() was very slow on Matlab 2016b/Mac
-        tmpAll = tmp(:, 1);
-        for jj = 2:size(tmp, 2) 
-            tmpAll = tmpAll & tmp(:, jj);  
-        end
-        eq0Var = eq0Var | tmpAll;
+        iicomp = Icomp(ii, :);
+        eq0Var = eq0Var | all(uniqueSupport(:, iicomp), 2); %Time consuming.
     end
 
     if nonneg
